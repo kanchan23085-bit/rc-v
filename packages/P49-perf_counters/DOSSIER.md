@@ -72,6 +72,24 @@ mapped registers. A GPU would have one counter per core / warp and would
 need to add them together, because many threads run at the same time.
 Our RISC-V way is simplest: two plain counters, read like I/O registers.
 
+## U6 Memory and I/O
+
+My block does not do a memory access by itself, it is not RAM and it does
+not move data like DMA does. It is a memory-mapped I/O block.
+
+How it works: the CPU does a normal load, for example `lw x5, 0(x6)` where
+`x6` holds the address of CYCLE. The neighbouring blocks do the real work:
+the address decoder sees that the address is for P49, the bus / memory
+controller routes the read to my block instead of RAM, and my block puts
+the current CYCLE value on the data bus. The CPU then writes that value
+into `x5` in write-back.
+
+For a write / clear, the CPU does a store to the CLEAR address. The bus
+carries the address + data to my block, and my block clears both counters
+to 0. So data reaches my block through the bus and address decoder, and
+leaves my block through the data bus back to the CPU.
+
+
 ## E1 Instruction trace: BGE
 
 Instruction: `BGE x1, x2, label` - branch if x1 >= x2 (signed).
