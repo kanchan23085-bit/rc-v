@@ -28,9 +28,9 @@ p49_loop:
   add a0, a0, t2
   addi t2, t2, -1
   bnez t2, p49_loop
-  mv s3, a0
-  lw s5, 0(a5)
   lw s4, 4(a5)
+  lw s5, 0(a5)
+  mv s3, a0
   sub s6, s5, s4
   li a5, p49_PERF_BASE
   li a4, p49_DMA_BASE
@@ -47,8 +47,8 @@ p49_poll:
   lw t0, 16(a4)
   andi t0, t0, 2
   beqz t0, p49_poll
-  lw s8, 0(a5)
   lw s0, 4(a5)
+  lw s8, 0(a5)
   sw zero, 16(a4)
   sub s7, s8, s0
   sub s9, s7, s6
