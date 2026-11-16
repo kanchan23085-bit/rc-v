@@ -16,7 +16,7 @@ always @(posedge clk) begin
 end
 
 assign rdata = (!sel) ? 32'd0 :
-               (ridx == 4'd0) ? instret_cnt :
-               (ridx == 4'd1) ? cycle_cnt :
+  (ridx == 4'd0) ?  cycle_cnt :
+  (ridx == 4'd1) ? instret_cnt :
                (ridx == 4'd15) ? 32'd49 :
                32'd0;
