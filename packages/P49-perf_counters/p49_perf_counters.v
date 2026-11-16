@@ -20,10 +20,6 @@ module p49_perf_counters (
     end else if (sel && we && (ridx == 4'd2)) begin
       cycle_cnt <= 32'd0;
       instret_cnt <= 32'd0;
-       end else if (sel && we && (ridx == 4'd2)) begin
-      cycle_cnt <= 32'd0;
-      instret_cnt <= 32'd0;
-    end else begin 
     end else begin
       cycle_cnt <= cycle_cnt + 32'd1;
       if (commit)
@@ -31,7 +27,7 @@ module p49_perf_counters (
     end
   end
 
-  assign rdata = 
+  assign rdata =
     (ridx == 4'd0) ? cycle_cnt :
     (ridx == 4'd1) ? instret_cnt :
     (ridx == 4'd15) ? 32'd49 :
