@@ -1,19 +1,22 @@
-// P49 Performance counters
-// Keep the module name and the port list exactly as they are.
-// You may change 'output wire' to 'output reg' if you assign an output in an always block.
-// Delete the placeholder assigns and write your design.
-module p49_perf_counters (
-    input  wire clk,
-    input  wire rst,
-    input  wire sel,
-    input  wire we,
-    input  wire re,
-    input  wire [3:0] ridx,
-    input  wire [31:0] wdata,
-    output wire [31:0] rdata,
-    input  wire commit
-);
+reg [31:0] cycle_cnt;
+reg [31:0] instret_cnt;
 
-    assign rdata = 32'd0;   // placeholder
+always @(posedge clk) begin
+  if (rst) begin
+    cycle_cnt <= 32'd0;
+    instret_cnt <= 32'd0;
+  end else if (sel && we && (ridx == 4'd2)) begin
+    cycle_cnt <= 32'd0;
+    instret_cnt <= 32'd0;
+  end else begin
+    cycle_cnt <= cycle_cnt + 32'd1;
+    if (commit)
+      instret_cnt <= instret_cnt + 32'd1;
+  end
+end
 
-endmodule
+assign rdata = (!sel) ? 32'd0 :
+               (ridx == 4'd0) ? instret_cnt :
+               (ridx == 4'd1) ? cycle_cnt :
+               (ridx == 4'd15) ? 32'd49 :
+               32'd0;
