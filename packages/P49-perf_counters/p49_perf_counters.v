@@ -31,7 +31,7 @@ module p49_perf_counters (
     end
   end
 
-  assign rdata = (!sel || !re) ? 32'd0 :
+  assign rdata = 
     (ridx == 4'd0) ? cycle_cnt :
     (ridx == 4'd1) ? instret_cnt :
     (ridx == 4'd15) ? 32'd49 :
