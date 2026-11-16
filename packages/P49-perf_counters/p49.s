@@ -16,12 +16,10 @@ p49_main:
   sw s7, 12(sp)
   sw s8, 8(sp)
   sw s9, 4(sp)
-
   call rcv_read_dec
   mv s1, a0
   call rcv_read_dec
   mv s2, a0
-
   li a5, p49_PERF_BASE
   mv t2, s1
   li a0, 0
@@ -34,7 +32,6 @@ p49_loop:
   lw s5, 0(a5)
   lw s4, 4(a5)
   sub s6, s5, s4
-
   li a5, p49_PERF_BASE
   li a4, p49_DMA_BASE
   la a0, p49_src
@@ -55,10 +52,60 @@ p49_poll:
   sw zero, 16(a4)
   sub s7, s8, s0
   sub s9, s7, s6
-
   la a0, p49_str1
   call rcv_puts
   mv a0, s3
   call rcv_print_dec
   la a0, p49_str2
   call rcv_puts
+  mv a0, s5
+  call rcv_print_dec
+  la a0, p49_str3
+  call rcv_puts
+  mv a0, s4
+  call rcv_print_dec
+  la a0, p49_str4
+  call rcv_puts
+  mv a0, s6
+  call rcv_print_dec
+  call rcv_newline
+  la a0, p49_str5
+  call rcv_puts
+  mv a0, s8
+  call rcv_print_dec
+  la a0, p49_str3
+  call rcv_puts
+  mv a0, s0
+  call rcv_print_dec
+  la a0, p49_str4
+  call rcv_puts
+  mv a0, s7
+  call rcv_print_dec
+  call rcv_newline
+  la a0, p49_str6
+  call rcv_puts
+  mv a0, s9
+  call rcv_print_dec
+  call rcv_newline
+  lw s9, 4(sp)
+  lw s8, 8(sp)
+  lw s7, 12(sp)
+  lw s6, 16(sp)
+  lw s5, 20(sp)
+  lw s4, 24(sp)
+  lw s3, 28(sp)
+  lw s2, 32(sp)
+  lw s1, 36(sp)
+  lw s0, 40(sp)
+  lw ra, 44(sp)
+  addi sp, sp, 48
+  ret
+p49_str1: .asciz "loop: sum="
+p49_str2: .asciz " cycles="
+p49_str3: .asciz " instructions="
+p49_str4: .asciz " extra="
+p49_str5: .asciz "dma: cycles="
+p49_str6: .asciz "stolen by DMA: "
+  .align 2
+p49_src: .space 256
+p49_dst: .space 256
